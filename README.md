@@ -1,12 +1,12 @@
-# 🛒 Gerenciador de Lista de Compras com ArrayList
+# 📦 Sistema de Controle de Estoque com ArrayList
 
 ## 📖 Sobre o Projeto
 
-Este projeto foi desenvolvido com o objetivo de praticar o uso da classe `ArrayList` em Java, aplicando conceitos fundamentais de manipulação de listas dinâmicas, estruturas de repetição, estruturas de decisão e validação de dados.
+Este projeto foi desenvolvido com o objetivo de aprofundar os estudos sobre a classe `ArrayList` em Java, evoluindo um simples gerenciador de lista de compras para um sistema de controle de estoque baseado em Programação Orientada a Objetos.
 
-A aplicação simula um pequeno sistema de gerenciamento de lista de compras, permitindo ao usuário adicionar, listar, buscar e remover produtos através de um menu interativo executado no terminal.
+A aplicação permite cadastrar produtos, controlar quantidades em estoque, realizar buscas, remover produtos, calcular o valor total do estoque e visualizar todas as informações cadastradas através de um menu interativo executado no terminal.
 
-Além dos requisitos originais do desafio, foram implementadas funcionalidades extras para reforçar o aprendizado e tornar a aplicação mais robusta.
+Além da utilização de coleções, o projeto também explora conceitos como encapsulamento, validação de dados, criação de classes personalizadas, métodos de negócio e sobrescrita do método `toString()`.
 
 ---
 
@@ -14,74 +14,93 @@ Além dos requisitos originais do desafio, foram implementadas funcionalidades e
 
 Desenvolver uma aplicação capaz de:
 
-- Adicionar produtos a uma lista dinâmica
-- Listar todos os produtos cadastrados
-- Remover produtos da lista
+- Cadastrar produtos em uma lista dinâmica
+- Armazenar objetos em um `ArrayList`
+- Adicionar produtos ao estoque
 - Buscar produtos cadastrados
-- Exibir a quantidade total de produtos
-- Trabalhar com menus interativos
+- Remover produtos
+- Listar todos os produtos
+- Exibir a quantidade total de itens em estoque
+- Calcular o valor total do estoque
 - Aplicar validações de entrada
+- Praticar Programação Orientada a Objetos
 
 ---
 
 ## ⚙️ Funcionalidades
 
-### ➕ Adicionar Produto
+### ➕ Cadastrar Produto
 
-Permite cadastrar um novo produto na lista.
+Permite cadastrar novos produtos informando:
+
+- Nome
+- Preço
+- Quantidade
+- Código
+- Categoria
 
 Validações implementadas:
 
-- Não permite nomes vazios ou em branco.
-- Exibe mensagem de confirmação após o cadastro.
+- Nome obrigatório
+- Código obrigatório
+- Categoria obrigatória
+- Preço maior que zero
+- Quantidade não negativa
+- Não permite produtos com nomes duplicados
+- Não permite códigos duplicados
+
+---
+
+### 📥 Adicionar Estoque
+
+Permite aumentar a quantidade disponível de um produto já cadastrado.
+
+O sistema localiza o produto pelo nome e atualiza automaticamente o estoque.
 
 Exemplo:
 
 ```text
-Para adicionar digite o nome do produto:
-Arroz
+Para adicionar no estoque digite o nome do produto:
 
-Produto adicionado com sucesso!
+Teclado
+
+Quantidade:
+
+10
+
+Estoque atualizado! Quantidade atual: 20
 ```
 
 ---
 
 ### 📋 Listar Produtos
 
-Exibe todos os produtos cadastrados na lista.
-
-Caso a lista esteja vazia, uma mensagem informativa é apresentada.
+Exibe todos os produtos cadastrados utilizando o método sobrescrito `toString()`.
 
 Exemplo:
 
 ```text
-Listando produtos:
-
-1 - Arroz
-2 - Feijão
-3 - Macarrão
+Nome: Teclado
+| Preço: R$150.0
+| Estoque: 20
+| Código: TEC001
+| Categoria: Periféricos
 ```
 
 ---
 
 ### ❌ Remover Produto
 
-Permite remover um produto informando seu nome.
+Permite remover um produto através do nome.
 
-A busca é realizada utilizando:
-
-```java
-equalsIgnoreCase()
-```
-
-Dessa forma, não há diferenciação entre letras maiúsculas e minúsculas.
+A busca é realizada ignorando diferenças entre letras maiúsculas e minúsculas.
 
 Exemplo:
 
 ```text
 Qual produto deseja remover?
 
-arroz
+Teclado
 
 Produto removido com sucesso!
 ```
@@ -90,34 +109,57 @@ Produto removido com sucesso!
 
 ### 🔍 Buscar Produto
 
-Permite verificar se determinado produto está cadastrado.
-
-A busca também utiliza:
-
-```java
-equalsIgnoreCase()
-```
+Permite localizar um produto específico e exibir todas as suas informações.
 
 Exemplo:
 
 ```text
 Digite o nome do produto
 
-Feijão
+Teclado
 
-Produto disponível!
+Nome: Teclado
+| Preço: R$150.0
+| Estoque: 20
+| Código: TEC001
+| Categoria: Periféricos
 ```
 
 ---
 
 ### 📦 Quantidade de Produtos
 
-Exibe o total de produtos atualmente cadastrados na lista.
+Exibe duas informações:
+
+- Quantidade de produtos diferentes cadastrados
+- Quantidade total de itens em estoque
 
 Exemplo:
 
 ```text
-Existem 5 produtos cadastrados.
+Existem 5 produtos diferentes cadastrados.
+
+A quantidade total de produtos em estoque é 120 produtos.
+```
+
+---
+
+### 💰 Valor Total do Estoque
+
+Calcula automaticamente o valor total armazenado no estoque.
+
+O cálculo é realizado através da multiplicação:
+
+```text
+Preço × Quantidade
+```
+
+de todos os produtos cadastrados.
+
+Exemplo:
+
+```text
+Valor total do estoque: R$ 15450.00
 ```
 
 ---
@@ -130,31 +172,24 @@ Encerra a execução do programa.
 
 ## 🛡️ Validações Implementadas
 
-Além do solicitado originalmente, foram adicionadas validações para tornar o sistema mais seguro.
+O sistema possui diversas validações para evitar inconsistências nos dados.
 
 ### Validação de Menu
 
-Caso o usuário digite um valor que não seja numérico:
+Caso o usuário informe um valor que não seja numérico:
 
 ```text
-Escolha uma opção de 1 a 6.
+Escolha uma opção de 1 a 8.
 ```
 
 ---
 
-### Validação de Opção
+### Validação de Nome
 
-Caso o usuário informe uma opção inexistente:
+Não permite:
 
-```text
-Opção inválida! Escolha uma opção de 1 a 6!
-```
-
----
-
-### Validação de Produto
-
-Não permite cadastrar produtos com nome vazio.
+- Campos vazios
+- Espaços em branco
 
 Exemplo:
 
@@ -164,18 +199,105 @@ Nome inválido!
 
 ---
 
-## 🏗️ Estrutura da Aplicação
+### Validação de Preço
 
-A aplicação foi desenvolvida utilizando:
+Não permite:
 
-- Menu interativo
-- Estrutura de repetição `while`
-- Estrutura de decisão `switch case`
-- Classe `ArrayList`
-- Entrada de dados com `Scanner`
-- Estruturas condicionais
-- Laços de repetição
-- Manipulação de Strings
+- Letras
+- Valores menores ou iguais a zero
+
+Exemplo:
+
+```text
+Preço inválido.
+```
+
+---
+
+### Validação de Quantidade
+
+Não permite:
+
+- Letras
+- Valores negativos
+
+Exemplo:
+
+```text
+Quantidade inválida.
+```
+
+---
+
+### Validação de Código
+
+Não permite:
+
+- Código vazio
+- Código duplicado
+
+Exemplo:
+
+```text
+Já existe um produto cadastrado com esse código.
+```
+
+---
+
+## 🏗️ Classes do Projeto
+
+### DesafioArrayList
+
+Classe principal responsável por:
+
+- Exibir o menu interativo
+- Capturar entradas do usuário
+- Gerenciar a lista de produtos
+- Executar as funcionalidades da aplicação
+- Aplicar validações
+
+---
+
+### Produto
+
+Classe responsável por representar um produto dentro do estoque.
+
+#### Atributos
+
+```java
+private String nome;
+private double preco;
+private int quantidade;
+private String codigo;
+private String categoria;
+```
+
+#### Métodos
+
+```java
+adicionarEstoque()
+removerEstoque()
+calcularValorEstoque()
+toString()
+getters e setters
+```
+
+A classe foi desenvolvida seguindo os princípios de encapsulamento, mantendo seus atributos privados e disponibilizando acesso através de métodos públicos.
+
+---
+
+## 📂 Estrutura do Projeto
+
+```text
+src/
+└── br/
+    └── com/
+        └── giffoni/
+            └── pedro/
+                └── desafioarraylist/
+                    ├── DesafioArrayList.java
+                    └── Produto.java
+```
 
 ---
 
@@ -190,42 +312,18 @@ Exibir Menu
    ▼
 Escolher Opção
    │
-   ├── Adicionar Produto
+   ├── Cadastrar Produto
+   ├── Adicionar Estoque
    ├── Listar Produtos
    ├── Remover Produto
    ├── Buscar Produto
    ├── Quantidade de Produtos
+   ├── Valor Total do Estoque
    └── Sair
         │
         ▼
       Fim
 ```
-
----
-
-## 📂 Estrutura do Projeto
-
-```text
-src/
-└── br/
-    └── com/
-        └── giffoni/
-            └── pedro/
-                └── desafioarraylist/
-                    └── DesafioArrayList.java
-```
-
-### Classe Principal
-
-#### DesafioArrayList
-
-Responsável por:
-
-- Criar e gerenciar a lista de produtos
-- Exibir o menu interativo
-- Capturar entradas do usuário
-- Executar as funcionalidades da aplicação
-- Realizar validações de entrada
 
 ---
 
@@ -250,10 +348,20 @@ Responsável por:
 
 ## 📚 Conceitos Praticados
 
-### Estruturas de Dados
+### Programação Orientada a Objetos
+
+- Classes
+- Objetos
+- Encapsulamento
+- Construtores
+- Sobrescrita de métodos
+- Getters e Setters
+
+### Coleções
 
 - ArrayList
-- Lista dinâmica
+- Armazenamento de objetos
+- Manipulação dinâmica de listas
 
 ### Métodos do ArrayList
 
@@ -269,41 +377,49 @@ isEmpty()
 
 - while
 - switch case
-- if / else
 - for
+- if / else
 
 ### Manipulação de Strings
 
 ```java
 equalsIgnoreCase()
+trim()
 isBlank()
 ```
 
-### Entrada de Dados
+### Validação de Dados
 
-- Scanner
 - hasNextInt()
+- hasNextDouble()
+- Verificação de duplicidade
+- Validação de campos obrigatórios
+- Controle de valores negativos
 
-### Boas Práticas
+### Métodos Personalizados
 
-- Validação de entrada
-- Tratamento de erros de preenchimento
-- Organização de código
-- Separação de responsabilidades
+```java
+adicionarEstoque()
+removerEstoque()
+calcularValorEstoque()
+```
 
 ---
 
 ## 🎓 Objetivos de Aprendizagem
 
-Este projeto teve como foco o desenvolvimento das habilidades necessárias para trabalhar com coleções em Java, especialmente o uso de `ArrayList`.
+Este projeto foi desenvolvido para consolidar conhecimentos sobre:
 
-Durante a implementação foram praticados conceitos essenciais para aplicações reais, como:
-
-- Cadastro dinâmico de dados
-- Busca de informações
-- Remoção de elementos
-- Controle de fluxo
+- Programação Orientada a Objetos
+- Encapsulamento
+- Criação de classes personalizadas
+- Utilização de ArrayList com objetos
 - Validação de entradas do usuário
+- Manipulação de coleções
+- Estruturas de controle
+- Desenvolvimento de regras de negócio
+
+A evolução do desafio permitiu transformar uma simples lista de compras em um pequeno sistema de gerenciamento de estoque, simulando situações comuns encontradas em aplicações reais.
 
 ---
 
@@ -329,4 +445,4 @@ Durante a implementação foram praticados conceitos essenciais para aplicaçõe
 
 ## ⭐ Apoie o Projeto
 
-Se este projeto foi útil para você ou ajudou nos estudos de ArrayList em Java, considere deixar uma estrela no repositório.
+Se este projeto foi útil para você ou ajudou nos estudos de ArrayList, Programação Orientada a Objetos e controle de estoque em Java, considere deixar uma estrela no repositório.
