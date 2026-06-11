@@ -12,54 +12,69 @@ import java.util.Scanner;
  * @author Pedro
  */
 public class DesafioArrayList {
-
+    
+    public static Produto buscarProdutoPorNome(ArrayList<Produto> lista, String nome) {
+        for (Produto p : lista) {
+            if (p.getNome().equalsIgnoreCase(nome)) {
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    public static Produto buscarProdutoPorCodigo(ArrayList<Produto> lista, String codigo) {
+    for (Produto p : lista) {
+        if (p.getCodigo().equalsIgnoreCase(codigo)) {
+            return p;
+        }
+    }
+    return null;
+}
+    
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
         ArrayList<Produto> lista = new ArrayList<>();
         
-        int opcao = 0;
+        int opcao = 10;
         String produto;
         
-        while (opcao != 8){
+        while (opcao != 0){
             System.out.println("====== MENU ======");
             System.out.println("Escolha uma opção: ");
             System.out.println("1 - Cadastrar novo produto: ");
-            System.out.println("2 - Adicionar produto no estoque");
+            System.out.println("2 - Adicionar produto ao estoque");
             System.out.println("3 - Listar produtos");
-            System.out.println("4 - Remover produto");
-            System.out.println("5 - Buscar produto");
-            System.out.println("6 - Quantidade de produtos");
-            System.out.println("7 - Valor total do estoque");
-            System.out.println("8 - Sair");
+            System.out.println("4 - Remover cadastro de produto");
+            System.out.println("5 - Remover quantidade de produto");
+            System.out.println("6 - Buscar produto");
+            System.out.println("7 - Quantidade de produtos");
+            System.out.println("8 - Valor total do estoque");
+            System.out.println("9 - Alterar preço do produto");
+            System.out.println("0 - Sair");
             if (input.hasNextInt()) {
                 opcao = input.nextInt();
                 input.nextLine();
             } else {
-                System.out.println("Escolha uma opção de 1 a 8.");
+                System.out.println("Escolha uma opção de 0 a 9.");
                 input.nextLine();
             continue;
             }
         
             switch (opcao){
-            case 1: //CADASTRAR NOVO PRODUTO
-                System.out.println("Para cadastrar um novo produto digite o nome do produto: ");
-                String nome = input.nextLine().trim();
+                case 1: //CADASTRAR NOVO PRODUTO
+                    System.out.println("Para cadastrar um novo produto digite o nome do produto: ");
+                    String nome = input.nextLine().trim();
                                 
-                if (nome.isBlank()) {
+                    if (nome.isBlank()) {
                     System.out.println("Nome inválido!");
                     break;
-                }
-                                
-                boolean jaExiste = false;
-                
-                for (Produto p : lista) {
-
-                    if (p.getNome().equalsIgnoreCase(nome)) {
-                        jaExiste = true;
-                    break;
                     }
-                }
-                if (jaExiste) {
+                                
+                    boolean jaExiste = false;
+                
+                    Produto produtoEncontrado = buscarProdutoPorNome(lista, nome);
+
+                    if (produtoEncontrado != null) {
                         System.out.println("Nao foi possivel cadastrar esse produto. O produto já foi cadastrado anteriormente!");
                     break;
                     }
@@ -103,14 +118,9 @@ public class DesafioArrayList {
                     }
                     boolean codigoExiste = false;
 
-                    for (Produto p : lista) {
-                        if (p.getCodigo().equalsIgnoreCase(codigo)) {
-                        codigoExiste = true;
-                        break;
-                        }
-                    }
+                    Produto produtoCodigoEncontrado = buscarProdutoPorCodigo(lista, codigo);
 
-                    if (codigoExiste) {
+                    if (produtoCodigoEncontrado != null) {
                         System.out.println("Já existe um produto cadastrado com esse código.");
                         break;
                     }
@@ -127,136 +137,223 @@ public class DesafioArrayList {
                     lista.add(novoProduto);
                     
                     System.out.println("Produto cadastrado com sucesso!");
-            break;
+                break;
             
-            case 2: // ADICIONAR PRODUTO AO ESTOQUE
-                System.out.println("Para adicionar no estoque digite o nome do produto: ");
-                produto = input.nextLine().trim();
-                if (produto.isBlank()) {
-                    System.out.println("Nome inválido.");
-                    break;
-                }
-                
-                System.out.println("Quantidade: ");
+                case 2: // ADICIONAR PRODUTO AO ESTOQUE
+                    System.out.println("Para adicionar no estoque digite o nome do produto: ");
+                    produto = input.nextLine().trim();
 
-                if (!input.hasNextInt()) {
-                    System.out.println("Quantidade inválida.");
+                    if (produto.isBlank()) {
+                        System.out.println("Nome inválido.");
+                        break;
+                    }
+
+                    Produto produtoEncontradoEstoque = buscarProdutoPorNome(lista, produto);
+
+                    if (produtoEncontradoEstoque == null) {
+                        System.out.println("Produto não encontrado.");
+                        break;
+                    }
+
+                    System.out.println("Quantidade: ");
+
+                    if (!input.hasNextInt()) {
+                        System.out.println("Quantidade inválida.");
+                        input.nextLine();
+                        break;
+                    }
+
+                    int quantidadeAdd = input.nextInt();
                     input.nextLine();
-                    break;
-                }
 
-                int quantidadeAdd = input.nextInt();
-                input.nextLine();
+                    if (quantidadeAdd <= 0) {
+                        System.out.println("Quantidade inválida.");
+                        break;
+                    }
+
+                    produtoEncontradoEstoque.adicionarEstoque(quantidadeAdd);
+
+                    System.out.println("Estoque atualizado! Quantidade atual: " + produtoEncontradoEstoque.getQuantidade());
+
+                break;    
                 
-                boolean produtoEncontrado = false;
+                case 3: //LISTAR PRODUTOS
+                    if (lista.isEmpty()){
+                        System.out.println("A lista está vazia ");
+                    }else{
+                        System.out.println("Listando produtos:");
+                        for (Produto p : lista) {
+                            System.out.println(p);
+                        }  
+                    } 
+                break;
+            
+                case 4: //REMOVER CADASTRO DO PRODUTO
+                    System.out.println("Qual produto deseja remover: ");
+                    String produtoRemover = input.nextLine().trim();
+                    if (produtoRemover.isBlank()) {
+                        System.out.println("Nome inválido.");
+                    break;
+                    }
+                
+                    boolean produtoRemovido = false;
+                
+                    Produto produtoExcluir = buscarProdutoPorNome(lista, produtoRemover);
 
-                for (Produto p : lista) {
+                    if (produtoExcluir == null) {
+                        System.out.println("Produto não encontrado.");
+                        break;
+                    }
 
-                    if (p.getNome().equalsIgnoreCase(produto)) {
-                        
-                        if (quantidadeAdd <= 0) {
-                            System.out.println("Quantidade inválida.");
-                            break;
+                    lista.remove(produtoExcluir);
+                    System.out.println("Produto removido com sucesso!");
+                    
+                    if (!produtoRemovido) {
+                        System.out.println("Produto não encontrado.");
+                    }
+                break;
+            
+                case 5: //REMOVER QUANTIDADE DE PRODUTO
+                    System.out.println("Digite o nome do produto ");
+                    String produtoSaida = input.nextLine().trim();
+                    if (produtoSaida.isBlank()) {
+                        System.out.println("Nome inválido.");
+                    break;
+                    }
+                
+                    System.out.println("Quantidade a remover: ");
+                
+                    if (!input.hasNextInt()) {
+                        System.out.println("Quantidade inválida.");
+                        input.nextLine();
+                        break;
+                    }
+                    int quantidadeRemover = input.nextInt();
+                    input.nextLine();
+                
+                    if (quantidadeRemover <= 0) {
+                        System.out.println("Quantidade inválida.");
+                        break;
+                    }
+                
+                    boolean encontradoProduto = false;
+                
+                    for (Produto p : lista) {
+
+                        if (p.getNome().equalsIgnoreCase(produtoSaida)) {
+
+                            encontradoProduto = true;
+
+                            boolean sucesso = p.removerEstoque(quantidadeRemover);
+
+                                if (sucesso) {
+                                    System.out.println("Saída registrada! Estoque atual: " + p.getQuantidade());
+                                } else {System.out.println("Estoque insuficiente. Estoque atual: " + p.getQuantidade());
+                                }               
+                        break;
                         }
-                        
-                        p.adicionarEstoque(quantidadeAdd);
+                    }
 
-                        System.out.println("Estoque atualizado! Quantidade atual: " + p.getQuantidade());
+                    if (!encontradoProduto) {
+                        System.out.println("Produto não encontrado.");
+                    }
+                break;
+            
+                case 6: // BUSCAR PRODUTO
+                    System.out.println("Digite o nome do produto");
+                    String produtoBuscar = input.nextLine().trim();
 
-                        produtoEncontrado = true;
-
+                    if (produtoBuscar.isBlank()) {
+                        System.out.println("Nome inválido.");
                         break;
                     }
-                }
-                if (!produtoEncontrado) {
-                    System.out.println("Produto não encontrado.");
-                }
-            break;    
-                
-            case 3: //LISTAR PRODUTOS
-                if (lista.isEmpty()){
-                    System.out.println("A lista está vazia ");
-                }else{
-                    System.out.println("Listando produtos:");
-                    for (int i = 0; i < lista.size(); i++) {
-                        System.out.println(lista.get(i));
-                }   } 
-            break;
+
+                    Produto produtoEncontradoBusca = buscarProdutoPorNome(lista, produtoBuscar);
+
+                    if (produtoEncontradoBusca == null) {
+                        System.out.println("Produto não encontrado.");
+                    } else {
+                        System.out.println(produtoEncontradoBusca);
+                    }
+
+                break;
             
-            case 4: //REMOVER PRODUTOS
-                System.out.println("Qual produto deseja remover: ");
-                String produtoRemover = input.nextLine().trim();
-                if (produtoRemover.isBlank()) {
-                    System.out.println("Nome inválido.");
+                case 7: //QUANTIDADE DE PRODUTOS EM ESTOQUE
+                    System.out.println("Existem " + lista.size() + " produtos diferentes cadastrados.");
+                    int totalItens = 0;
+
+                    for (Produto p : lista) {
+                    totalItens += p.getQuantidade();
+                    }
+
+                    System.out.println("A quantidade total de produtos em estoque é " + totalItens + " produtos.");
+                break;
+            
+                case 8:    //VALOR TOTAL DE ESTOQUE
+                    double valorTotal = 0;
+
+                    for (Produto p : lista) {
+                    valorTotal += p.calcularValorEstoque();
+                    }
+                    System.out.println("Valor total do estoque: R$ " + valorTotal);
+                break;
+            
+                case 9: // ALTERAR PREÇO DE PRODUTO
+                    System.out.println("Digite o nome do produto: ");
+                    String nomeProdutoNewPreco = input.nextLine().trim();
+
+                    if (nomeProdutoNewPreco.isBlank()) {
+                        System.out.println("Nome inválido.");
                     break;
-                }
-                
-                boolean produtoRemovido = false;
-                
-                for (int i = 0; i < lista.size(); i++) {
-                    if (lista.get(i).getNome().equalsIgnoreCase(produtoRemover)){
-                    lista.remove(i);
-                    produtoRemovido = true;
-                        System.out.println(" Produto removido com sucesso!");
+                    }
+
+                    boolean buscarNewPreco = false;
+
+                    for (Produto p : lista) {
+
+                        if (p.getNome().equalsIgnoreCase(nomeProdutoNewPreco)) {
+
+                            buscarNewPreco = true;
+
+                            System.out.println("Digite o novo preço do produto:");
+
+                            if (!input.hasNextDouble()) {
+                                System.out.println("Preço inválido. Digite apenas números.");
+                                input.nextLine();
+                            break;
+                            }
+
+                            double produtoNewPreco = input.nextDouble();
+                            input.nextLine();
+
+                            if (produtoNewPreco <= 0) {
+                                System.out.println("Preço inválido.");
+                            break;
+                            }
+
+                            p.setPreco(produtoNewPreco);
+
+                            System.out.println("Preço do produto atualizado com sucesso!");
+                            System.out.println(p);
                         break;
+                        }
                     }
-                }if (!produtoRemovido) {
+
+                    if (!buscarNewPreco) {
                     System.out.println("Produto não encontrado.");
-                }
-            break;
-            
-            case 5: //BUSCAR PRODUTO
-                System.out.println("Digite o nome do produto");
-                String produtoBuscar = input.nextLine().trim();
-                if (produtoBuscar.isBlank()) {
-                    System.out.println("Nome inválido.");
-                    break;
-                }
-                
-                boolean buscar = false;
-                
-                for (int i = 0; i < lista.size(); i++) {
-                    if (lista.get(i).getNome().equalsIgnoreCase(produtoBuscar)){
-                    buscar = true;
-                        System.out.println(lista.get(i));
-                    break;
                     }
-                }if (!buscar) {
-                    System.out.println("Produto não encontrado.");
-                }
-            break;
+                break;
             
-            case 6: //QUANTIDADE DE PRODUTOS EM ESTOQUE
-                System.out.println("Existem " + lista.size() + " produtos diferentes cadastrados.");
-                int totalItens = 0;
-
-                for (Produto p : lista) {
-                totalItens += p.getQuantidade();
-                }
-
-                System.out.println("A quantidade total de produtos em estoque é " + totalItens + " produtos.");
-            break;
+                case 0:   //SAIR
+                break;
             
-            case 7:    //VALOR TOTAL DE ESTOQUE
-                double valorTotal = 0;
-
-                for (Produto p : lista) {
-                valorTotal += p.calcularValorEstoque();
-                }
-                System.out.println("Valor total do estoque: R$ " + valorTotal);
-            break;
-            
-            case 8:   //SAIR
-            break;
-            
-            default:
-                System.out.println("Opção inválida! Escolha uma opção de 1 a 8!");
-            break;
-            
+                default:
+                    System.out.println("Opção inválida! Escolha uma opção de 0 a 9!");
+                break;
             } 
-            if(opcao == 8){
+            if(opcao == 0){
                 System.out.println("Saindo do programa");
-            break;
+                break;
             }
     }   }
 }

@@ -15,22 +15,15 @@ public class Produto {
     private String codigo;
     private String categoria;
     
-    public Produto(String nome, double preco, int quantidade, String codigo, String categoria) {
-    this.nome = nome;
-    this.preco = preco;
-    this.quantidade = quantidade;
-    this.codigo = codigo;
-    this.categoria = categoria;
-    }
+   @Override
+        public String toString() {
+            return String.format(
+            "Nome: %s | Preço: R$ %.2f | Estoque: %d | Código: %s | Categoria: %s",
+            nome, preco, quantidade, codigo, categoria
+            );
+        }
     
-    @Override
-    public String toString() {
-    return "Nome: " + nome
-            + " | Preço: R$" + preco
-            + " | Estoque: " + quantidade
-            + " | Código: " + codigo
-            + " | Categoria: " + categoria;
-}
+    
 
     public void adicionarEstoque(int quantidade) {
     this.quantidade += quantidade;
@@ -94,9 +87,11 @@ public class Produto {
         this.categoria = categoria;
     }
     
-    
-    
-    
-    
-    
+    public Produto(String nome, double preco, int quantidade, String codigo, String categoria) {
+    this.nome = nome;
+    setPreco(preco);
+    setQuantidade(quantidade);
+    this.codigo = codigo;
+    this.categoria = categoria;
+    }   
 }
